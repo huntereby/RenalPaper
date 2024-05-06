@@ -21,8 +21,13 @@ column_names <- colnames(tbl)
 new_df1 <- tibble(
   sample = rep(column_names),  # Repeat each column name 4 times
   group = rep("transplant", times = length(column_names)),  # Fill 'group' column with "transplant"
+  replicate = rep(paste0("transplant_", 1:96), each = 4),
+  time_point = rep(paste0('preop', '3wk', '3mo', '7mo'), rep=24))
   # Setting up the replicate column
-  total_col <- do.call(rbind, lapply(FUN=function(x) rep('transplant', 1:4), X=1:24))
+  # Repeat the string "transplant_1" 4 times, then "transplant_2" 4 times, and so on 
+  
+  # Combine columns of total_col into a single column
+  
+
   
 # View the new data frame
-print(new_df)
