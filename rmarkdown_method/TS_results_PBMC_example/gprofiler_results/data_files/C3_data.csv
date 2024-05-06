@@ -1,0 +1,4 @@
+,query,significant,p_value,term_size,query_size,intersection_size,precision,recall,term_id,source,term_name,effective_domain_size,source_order,parents
+1,query_1,TRUE,0.0499316934433554,2,1,1,1,0.5,CORUM:4089,CORUM,SMAD6-HOXC8 complex,3383,1534,CORUM:0000000
+2,query_1,TRUE,0.0499316934433554,2,1,1,1,0.5,CORUM:4090,CORUM,SMAD6-HOXA9 complex,3383,1535,CORUM:0000000
+3,query_1,TRUE,0.0461516138126029,50,2,2,1,0.04,HP:0001961,HP,Hypoplastic heart,4958,1427,HP:0001627
