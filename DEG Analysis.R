@@ -22,7 +22,7 @@ new_df1 <- tibble(
   sample = rep(column_names),  # Repeat each column name 4 times
   group = rep("transplant", times = length(column_names)),  # Fill 'group' column with "transplant"
   replicate = rep(paste0("transplant_", 1:96), each = 4),
-  time_point = rep(paste0('preop', '3wk', '3mo', '7mo'), rep=24))
+  time_point = rep(c('preop', '3wk', '3mo', '7mo'), 24))
   # Setting up the replicate column
   # Repeat the string "transplant_1" 4 times, then "transplant_2" 4 times, and so on 
   
