@@ -21,6 +21,7 @@ tbl <- as.matrix(data.table::fread(path, header=T, colClasses="integer"), rownam
 #DEG using time series. 
 BiocManager::install("GEOmeta")
 X <- getGEO("GSE86884")
+install.packages("tidyverse")
 library(tidyverse)
 
 # Assuming 'tbl' is your existing data frame
