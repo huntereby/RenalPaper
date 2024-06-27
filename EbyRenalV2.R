@@ -5,6 +5,9 @@
 # Version info: R 4.2.2, Biobase 2.58.0, GEOquery 2.66.0, limma 3.54.0
 ################################################################
 #   Differential expression analysis with DESeq2
+install.packages("BiocManager")
+library(BiocManager)
+BiocManager::install("DESeq2")
 library(DESeq2)
 
 # load counts table from GEO
@@ -53,3 +56,28 @@ res_6_week <- merge(as.data.frame(res_6_week), annot, by=0, sort=F)
 res_6_week <- subset(res_3_week, select=c("Symbol","log2FoldChange","pvalue"))
 res_6_week
 write.csv(res_6_week, "6MonthComp.csv")
+
+#Time series analysis
+#Pre transplant to 1 week analysis
+time1 <- results(ds, contrast=c("Group", groups[1], groups[2]), alpha=0.05, pAdjustMethod = "fdr")
+time1 <- merge(as.data.frame(time1), annot, by=0, sort=F)
+time1 <- subset(time1, select=c("Symbol","log2FoldChange","pvalue"))
+time1
+write.csv(time1, "time1.csv")
+#1 week to 3 month analysis
+time2 <- results(ds, contrast=c("Group", groups[2], groups[3]), alpha=0.05, pAdjustMethod = "fdr")
+time2 <- merge(as.data.frame(time2), annot, by=0, sort=F)
+time2 <- subset(time2, select=c("Symbol","log2FoldChange","pvalue"))
+time2
+write.csv(time2, "time2.csv")
+#3 months to 6 month analysis
+time3 <- results(ds, contrast=c("Group", groups[3], groups[4]), alpha=0.05, pAdjustMethod = "fdr")
+time3 <- merge(as.data.frame(time3), annot, by=0, sort=F)
+time3 <- subset(time3, select=c("Symbol","log2FoldChange","pvalue"))
+time3
+write.csv(time3, "time3.csv")
+
+
+
+
+
