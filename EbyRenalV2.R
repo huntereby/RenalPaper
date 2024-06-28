@@ -8,7 +8,7 @@
 #This is my test with positron
 install.packages("BiocManager")
 library(BiocManager)
-BiocManager::install("DESeq2")
+BiocManager::install("DESeq2", force = T)
 library(DESeq2)
 
 # load counts table from GEO
