@@ -1,6 +1,14 @@
 # Version info: R 4.2.2, Biobase 2.58.0, GEOquery 2.66.0, limma 3.54.0
 ################################################################
 #   Differential expression analysis with limma
+<<<<<<< HEAD
+=======
+install.packages("GEOQuery")
+install.packages("limma")
+BiocManager::install("GEOquery")
+BiocManager::install("limma")
+BiocManager::install('umap')
+>>>>>>> 7f92036 (New data)
 library(GEOquery)
 library(limma)
 library(umap)
