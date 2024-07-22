@@ -11,7 +11,8 @@ library(umap)
 gset <- getGEO("GSE50084", GSEMatrix =TRUE, AnnotGPL=TRUE)
 if (length(gset) > 1) idx <- grep("GPL6244", attr(gset, "names")) else idx <- 1
 gset <- gset[[idx]]
-
+data <- gset[[1]]
+pheno_data <- pData(data)
 # make proper column names to match toptable 
 fvarLabels(gset) <- make.names(fvarLabels(gset))
 
@@ -53,9 +54,9 @@ fit2 <- contrasts.fit(fit, cont.matrix)
 
 # compute statistics and table of top significant genes
 fit2 <- eBayes(fit2, 0.01)
-tT <- topTable(fit2, adjust="fdr", sort.by="B", number=250)
+tT <- topTable(fit2, adjust="fdr", sort.by="B", number=1000000)
 
-tT <- subset(tT, select=c("ID","adj.P.Val","P.Value","t","B","logFC","GB_LIST","SPOT_ID","RANGE_GB","RANGE_STRAND","RANGE_START","Gene.symbol","Gene.title"))
+tT <- subset(tT, select=c("ID","Gene.symbol"))
 write.table(tT, file=stdout(), row.names=F, sep="\t")
 
 # Visualize and quality control test results.
