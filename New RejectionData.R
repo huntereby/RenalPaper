@@ -57,6 +57,7 @@ fit2 <- eBayes(fit2, 0.01)
 tT <- topTable(fit2, adjust="fdr", sort.by="B", number=1000000)
 
 tT <- subset(tT, select=c("ID","Gene.symbol"))
+write.csv(tT, "ebytT.csv")
 write.table(tT, file=stdout(), row.names=F, sep="\t")
 
 # Visualize and quality control test results.
