@@ -1,6 +1,9 @@
+#Male Biopsy Rejection versus DSA+ No Rejection
 # Version info: R 4.2.2, Biobase 2.58.0, GEOquery 2.66.0, limma 3.54.0
 ################################################################
 #   Differential expression analysis with limma
+install.packages("BiocManger")
+BiocManager::install("GEOquery")
 library(GEOquery)
 library(limma)
 library(umap)
@@ -15,7 +18,7 @@ gset <- gset[[idx]]
 fvarLabels(gset) <- make.names(fvarLabels(gset))
 
 # group membership for all samples
-gsms <- paste0("XX0X0XXX0X0XXXXX0XX0XXXXXXXXXXXXX1XX11X1XXXXX1X11X",
+gsms <- paste0("XXXXXXXXXXXXXXXXXXXXX00X000000XXX1XX11X1XXXXX1X11X",
                "XXXXX1X1111XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
                "XXXXXXXXXXXXXXX")
 sml <- strsplit(gsms, split="")[[1]]
@@ -35,7 +38,7 @@ exprs(gset) <- log2(ex) }
 
 # assign samples to groups and set up design matrix
 gs <- factor(sml)
-groups <- make.names(c("Bio Normal Males","Bio Rejected Males"))
+groups <- make.names(c("Male Bio Normal DSA","MBR"))
 levels(gs) <- groups
 gset$group <- gs
 design <- model.matrix(~group + 0, gset)
@@ -52,8 +55,9 @@ fit2 <- contrasts.fit(fit, cont.matrix)
 
 # compute statistics and table of top significant genes
 fit2 <- eBayes(fit2, 0.01)
-tT <- topTable(fit2, adjust="fdr", sort.by="B", number=100000000000000000000)
+tT <- topTable(fit2, adjust="fdr", sort.by="B", number=10000000)
 
 tT <- subset(tT, select=c("Gene.symbol","logFC","P.Value"))
 
-write.csv(tT, "MaleBiopsy.csv")
+write.csv(tT, "MaleBiopsyVSDSANormal.csv")
+

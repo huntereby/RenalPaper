@@ -16,8 +16,8 @@ fvarLabels(gset) <- make.names(fvarLabels(gset))
 
 # group membership for all samples
 gsms <- paste0("XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
-               "XXXXXXXXXXX000000000000XXXXXXXXXXXXXX1111111111111",
-               "XX1X11XX1X1XXXX")
+               "XXXXXXXXXXXXXXXXXXX0XXXX00X0XXXXX0XXXXX1XX1XXX111X",
+               "11XXX1XXX1X1X1X")
 sml <- strsplit(gsms, split="")[[1]]
 
 # filter out excluded samples (marked as "X")
@@ -35,7 +35,7 @@ exprs(gset) <- log2(ex) }
 
 # assign samples to groups and set up design matrix
 gs <- factor(sml)
-groups <- make.names(c("normal male","AR MALE"))
+groups <- make.names(c("Blood Female Normal","Blood Female Rejection"))
 levels(gs) <- groups
 gset$group <- gs
 design <- model.matrix(~group + 0, gset)
@@ -52,13 +52,11 @@ fit2 <- contrasts.fit(fit, cont.matrix)
 
 # compute statistics and table of top significant genes
 fit2 <- eBayes(fit2, 0.01)
-tT <- topTable(fit2, adjust="fdr", sort.by="B", number=100000000)
+tT <- topTable(fit2, adjust="fdr", sort.by="B", number=10000000)
 
 tT <- subset(tT, select=c("Gene.symbol","logFC","P.Value"))
-df1 <- tT[tT$Gene.symbol != "", ]
-write.csv(df1, "MaleAR.csv")
 
-write.table(tT, file=stdout(), row.names=F, sep="\t")
+write.csv(tT, "With_DSAFemaleBloodRejection.csv")
 
 # Visualize and quality control test results.
 # Build histogram of P-values for all genes. Normal test
@@ -98,7 +96,6 @@ abline(h=0)
 ex <- exprs(gset)
 
 # box-and-whisker plot
-dev.new(width=3+ncol(gset)/6, height=5)
 ord <- order(gs)  # order samples by group
 palette(c("#1B9E77", "#7570B3", "#E7298A", "#E6AB02", "#D95F02",
           "#66A61E", "#A6761D", "#B32424", "#B324B3", "#666666"))
@@ -106,7 +103,6 @@ par(mar=c(7,4,2,1))
 title <- paste ("GSE50084", "/", annotation(gset), sep ="")
 boxplot(ex[,ord], boxwex=0.6, notch=T, main=title, outline=FALSE, las=2, col=gs[ord])
 legend("topleft", groups, fill=palette(), bty="n")
-dev.off()
 
 # expression value distribution
 par(mar=c(4,4,2,1))
@@ -116,9 +112,9 @@ plotDensities(ex, group=gs, main=title, legend ="topright")
 # UMAP plot (dimensionality reduction)
 ex <- na.omit(ex) # eliminate rows with NAs
 ex <- ex[!duplicated(ex), ]  # remove duplicates
-ump <- umap(t(ex), n_neighbors = 13, random_state = 123)
+ump <- umap(t(ex), n_neighbors = 7, random_state = 123)
 par(mar=c(3,3,2,6), xpd=TRUE)
-plot(ump$layout, main="UMAP plot, nbrs=13", xlab="", ylab="", col=gs, pch=20, cex=1.5)
+plot(ump$layout, main="UMAP plot, nbrs=7", xlab="", ylab="", col=gs, pch=20, cex=1.5)
 legend("topright", inset=c(-0.15,0), legend=levels(gs), pch=20,
        col=1:nlevels(gs), title="Group", pt.cex=1.5)
 library("maptools")  # point labels without overlaps
